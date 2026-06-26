@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #ec721a;
+  --accent-glow: #f09a57;
+  --accent-soft: #f4c7a1;
+  --graphite: #1e2328;
+  --pearl: #e9e7e2;
+  --off-white: #f7f7f5;
+  --metallic: #c9cdd2;
+  --pointer-x: 0;
+  --pointer-y: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--off-white);
+  color: var(--graphite);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .hero-scene {
+    background:
+      linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.045) 49.5%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.045) 50.5%, transparent 100%),
+      radial-gradient(ellipse 56% 38% at 50% 58%, rgba(143, 216, 255, 0.18) 0%, transparent 64%),
+      radial-gradient(ellipse 82% 58% at 50% 32%, rgba(244, 247, 250, 0.14) 0%, transparent 64%),
+      radial-gradient(ellipse 96% 72% at 50% 56%, rgba(112, 130, 146, 0.14) 0%, transparent 58%),
+      linear-gradient(180deg, #191b1d 0%, #0f1113 48%, #050607 100%);
+  }
+
+  .hero-haze {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.7;
+  }
+
+  .hero-bloom {
+    background: radial-gradient(
+      ellipse 42% 28% at 50% 54%,
+      rgba(216, 244, 255, 0.16) 0%,
+      rgba(143, 216, 255, 0.08) 38%,
+      transparent 72%
+    );
+  }
+
+  .hero-floor {
+    background:
+      radial-gradient(ellipse 54% 30% at 50% 72%, rgba(216, 244, 255, 0.16) 0%, transparent 70%),
+      linear-gradient(to top, rgba(0, 0, 0, 0.84) 0%, rgba(195, 205, 216, 0.08) 42%, transparent 100%);
+  }
+
+  .hero-floor::after {
+    content: "";
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(244, 247, 250, 0.42),
+      transparent
+    );
+    box-shadow: 0 0 96px rgba(244, 247, 250, 0.26);
+  }
+
+  .hero-vignette {
+    background: radial-gradient(
+      ellipse 88% 78% at 50% 48%,
+      transparent 28%,
+      rgba(0, 0, 0, 0.82) 100%
+    );
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
