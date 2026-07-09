@@ -5,12 +5,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { LogoIcon } from "@/components/hero/LogoIcon";
 import { cinematicEase } from "@/lib/animation";
+import { cn } from "@/lib/cn";
+
 const NAV_LINKS = [
-  { label: "Company", href: "#company" },
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "Platform", href: "#platform" },
-  { label: "Intelligence Lab", href: "#intelligence-lab" },
-  { label: "Insights", href: "#insights" },
+  { label: "Business", href: "#business" },
+  { label: "Expertise", href: "#expertise" },
+  { label: "Intelligence", href: "#intelligence" },
+  { label: "Solutions", href: "#solutions" },
+  { label: "Family", href: "#family-office" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
@@ -39,38 +41,65 @@ function useNycTime() {
 
 export function Navbar() {
   const nycTime = useNycTime();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const updateScrolled = () => setIsScrolled(window.scrollY > 80);
+
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrolled);
+  }, []);
 
   return (
     <motion.header
-      className="fixed inset-x-0 top-0 z-30"
+      className="fixed inset-x-0 top-0 z-40 px-3 pt-3 md:px-6"
       initial={{ opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: cinematicEase, delay: 0.2 }}
     >
       <nav
-        className="relative mx-auto grid max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-6 py-4 md:px-10 lg:py-5"
+        className={cn(
+          "relative mx-auto grid max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center rounded-full border px-4 py-3 transition-all duration-500 md:px-6",
+          isScrolled
+            ? "border-white/70 bg-white/78 shadow-xl shadow-graphite/5 backdrop-blur-xl"
+            : "border-white/24 bg-black/42 shadow-xl shadow-black/35 backdrop-blur-2xl",
+        )}
         aria-label="Main navigation"
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5">
           <LogoIcon className="h-7 w-7" />
           <div>
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
+            <span
+              className={cn(
+                "block text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors",
+                isScrolled ? "text-graphite" : "text-[#f4fbff]",
+              )}
+            >
               MEGAANNUM
             </span>
-            <span className="hidden text-[7px] uppercase tracking-[0.22em] text-white/42 sm:block">
+            <span
+              className={cn(
+                "hidden text-[7px] uppercase tracking-[0.22em] transition-colors sm:block",
+                isScrolled ? "text-graphite/45" : "text-[#cfefff]",
+              )}
+            >
               Intelligence for Capital
             </span>
           </div>
         </Link>
 
         {/* Center nav */}
-        <ul className="hidden items-center justify-center gap-5 lg:flex xl:gap-7">
+        <ul className="hidden items-center justify-center gap-3 min-[920px]:flex xl:gap-6">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="text-[9px] uppercase tracking-nav text-white/48 transition-colors duration-300 hover:text-white/85"
+                className={cn(
+                  "text-[8px] uppercase tracking-[0.13em] transition-colors duration-300 xl:text-[9px] xl:tracking-nav",
+                  isScrolled ? "text-graphite/52 hover:text-graphite" : "text-[#dff7ff] hover:text-[#ff7a1a]",
+                )}
               >
                 {link.label}
               </Link>
@@ -81,7 +110,12 @@ export function Navbar() {
         {/* Right utilities */}
         <div className="flex items-center justify-end gap-4">
           {nycTime ? (
-            <span className="hidden text-[9px] uppercase tracking-nav text-white/45 md:block">
+            <span
+              className={cn(
+                "hidden text-[9px] uppercase tracking-nav transition-colors md:block",
+                isScrolled ? "text-graphite/45" : "text-[#cfefff]",
+              )}
+            >
               ( NYC ) {nycTime}
             </span>
           ) : null}
@@ -90,8 +124,8 @@ export function Navbar() {
             className="flex flex-col gap-1 p-1"
             aria-label="Open menu"
           >
-            <span className="block h-px w-4 bg-white/60" />
-            <span className="block h-px w-4 bg-white/60" />
+            <span className={cn("block h-px w-4 transition-colors", isScrolled ? "bg-graphite/60" : "bg-white/90")} />
+            <span className={cn("block h-px w-4 transition-colors", isScrolled ? "bg-graphite/60" : "bg-white/90")} />
           </button>
         </div>
       </nav>

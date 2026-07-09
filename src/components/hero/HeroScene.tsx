@@ -19,7 +19,7 @@ export function HeroScene() {
   const [splineFailed, setSplineFailed] = useState(false);
 
   return (
-    <section className="relative h-[100dvh] w-full overflow-hidden bg-[#060606]">
+    <section id="intro" className="relative h-[100dvh] w-full overflow-hidden bg-[#060606]">
       <DeviceDetector />
       <CursorTracker />
       <AmbientGlow />
