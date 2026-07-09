@@ -15,7 +15,7 @@ export function HeroTypography() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.1, ease: cinematicEase, delay: 0.35 }}
       >
-        AI Integrated. Impact Multiplied.
+        Generative AI Solutions. Impact Multiplied.
       </motion.p>
 
       <motion.h1
@@ -28,13 +28,13 @@ export function HeroTypography() {
           className="block text-[clamp(2.8rem,8vw,6.6rem)] text-white"
           style={{ textShadow: "0 4px 42px rgba(0,0,0,0.9)" }}
         >
-          INTELLIGENCE
+          Generative AI
         </span>
         <span
           className="block text-[clamp(2.8rem,8vw,6.6rem)] text-accent"
           style={{ textShadow: "0 0 42px rgba(236,113,26,0.42)" }}
         >
-          INTEGRATED.
+          Solutions
         </span>
       </motion.h1>
 

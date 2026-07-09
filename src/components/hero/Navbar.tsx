@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { LogoIcon } from "@/components/hero/LogoIcon";
+import { StaggeredMenu } from "@/components/hero/StaggeredMenu";
 import { cinematicEase } from "@/lib/animation";
 import { cn } from "@/lib/cn";
 
@@ -16,32 +17,9 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ] as const;
 
-function useNycTime() {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    const format = () => {
-      const now = new Date();
-      const formatted = now.toLocaleTimeString("en-US", {
-        timeZone: "America/New_York",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-      setTime(formatted);
-    };
-
-    format();
-    const interval = window.setInterval(format, 30000);
-    return () => window.clearInterval(interval);
-  }, []);
-
-  return time;
-}
-
 export function Navbar() {
-  const nycTime = useNycTime();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateScrolled = () => setIsScrolled(window.scrollY > 80);
@@ -53,17 +31,18 @@ export function Navbar() {
 
   return (
     <motion.header
-      className="fixed inset-x-0 top-0 z-40 px-3 pt-3 md:px-6"
+      className="fixed inset-x-0 top-0 z-[100] px-3 pt-3 md:px-6"
       initial={{ opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: cinematicEase, delay: 0.2 }}
     >
       <nav
         className={cn(
-          "relative mx-auto grid max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center rounded-full border px-4 py-3 transition-all duration-500 md:px-6",
+          "relative mx-auto grid max-w-[1600px] grid-cols-[1fr_auto] items-center rounded-full border px-4 py-3 transition-all duration-500 md:px-6 min-[920px]:grid-cols-[1fr_auto_1fr]",
           isScrolled
             ? "border-white/70 bg-white/78 shadow-xl shadow-graphite/5 backdrop-blur-xl"
             : "border-white/24 bg-black/42 shadow-xl shadow-black/35 backdrop-blur-2xl",
+          isMobileMenuOpen && "max-[919px]:pointer-events-none max-[919px]:opacity-0",
         )}
         aria-label="Main navigation"
       >
@@ -74,24 +53,16 @@ export function Navbar() {
             <span
               className={cn(
                 "block text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors",
-                isScrolled ? "text-graphite" : "text-[#f4fbff]",
+                isScrolled || isMobileMenuOpen ? "text-graphite" : "text-[#f4fbff]",
               )}
             >
               MEGAANNUM
-            </span>
-            <span
-              className={cn(
-                "hidden text-[7px] uppercase tracking-[0.22em] transition-colors sm:block",
-                isScrolled ? "text-graphite/45" : "text-[#cfefff]",
-              )}
-            >
-              Intelligence for Capital
             </span>
           </div>
         </Link>
 
         {/* Center nav */}
-        <ul className="hidden items-center justify-center gap-3 min-[920px]:flex xl:gap-6">
+        <ul className="hidden items-center justify-center gap-3 min-[920px]:col-start-2 min-[920px]:row-start-1 min-[920px]:flex xl:gap-6">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
@@ -107,26 +78,22 @@ export function Navbar() {
           ))}
         </ul>
 
-        {/* Right utilities */}
-        <div className="flex items-center justify-end gap-4">
-          {nycTime ? (
-            <span
-              className={cn(
-                "hidden text-[9px] uppercase tracking-nav transition-colors md:block",
-                isScrolled ? "text-graphite/45" : "text-[#cfefff]",
-              )}
-            >
-              ( NYC ) {nycTime}
-            </span>
-          ) : null}
-          <button
-            type="button"
-            className="flex flex-col gap-1 p-1"
-            aria-label="Open menu"
-          >
-            <span className={cn("block h-px w-4 transition-colors", isScrolled ? "bg-graphite/60" : "bg-white/90")} />
-            <span className={cn("block h-px w-4 transition-colors", isScrolled ? "bg-graphite/60" : "bg-white/90")} />
-          </button>
+        {/* Mobile menu */}
+        <div className="col-start-2 row-start-1 flex items-center justify-end gap-4 min-[920px]:col-start-3">
+          <StaggeredMenu
+            className="min-[920px]:hidden"
+            items={NAV_LINKS.map((link) => ({
+              label: link.label,
+              ariaLabel: `Go to ${link.label}`,
+              link: link.href,
+            }))}
+            colors={["#EC721A", "#8fd8ff", "#05080c"]}
+            menuButtonColor={isScrolled || isMobileMenuOpen ? "#1E2328" : "#ffffff"}
+            openMenuButtonColor="#1E2328"
+            accentColor="#EC721A"
+            onMenuOpen={() => setIsMobileMenuOpen(true)}
+            onMenuClose={() => setIsMobileMenuOpen(false)}
+          />
         </div>
       </nav>
     </motion.header>

@@ -283,7 +283,7 @@ function SectionHeader({
 }) {
   return (
     <div className={align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
-      <p className="section-eyebrow text-[11px] font-semibold uppercase tracking-[0.32em] text-sky-500">
+      <p className="section-eyebrow text-[11px] font-semibold uppercase tracking-[0.32em] text-accent">
         {eyebrow}
       </p>
       <h2 className="section-title mt-4 text-4xl font-black tracking-[-0.04em] text-graphite md:text-6xl">
@@ -378,7 +378,7 @@ function ExpertRolesSection() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(143,216,255,0.16),transparent_36%),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.09),transparent_34%)]" />
       <div className="relative mx-auto max-w-7xl">
         <div className="max-w-3xl">
-          <p className="section-eyebrow text-[11px] font-semibold uppercase tracking-[0.32em] text-sky-500">
+          <p className="section-eyebrow text-[11px] font-semibold uppercase tracking-[0.32em] text-accent">
             Experts Behind The Systems
           </p>
           <h2 className="section-title mt-4 text-4xl font-black tracking-[-0.04em] text-accent md:text-6xl">
@@ -479,9 +479,9 @@ function FamilyOfficeDetailSection() {
 function FinalCtaSection() {
   return (
     <section id="contact" className="content-section scroll-mt-24 bg-[#05080c] px-6 py-24 text-white md:px-10">
-      <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/12 bg-white/[0.06] p-8 text-center backdrop-blur md:p-14">
-        <p className="section-eyebrow text-[11px] font-semibold uppercase tracking-[0.32em] text-sky-300">
-          Intelligence Integrated
+      <div className="mx-auto max-w-5xl rounded-[2rem] border border-accent/30 bg-white/[0.06] p-8 text-center shadow-[0_0_80px_rgba(236,113,26,0.16)] backdrop-blur md:p-14">
+        <p className="section-eyebrow text-[11px] font-semibold uppercase tracking-[0.32em] text-accent">
+          Generative AI Solutions
         </p>
         <h2 className="section-title mt-4 text-4xl font-black tracking-[-0.04em] md:text-6xl">
           Built for finance teams that need speed, precision, and control.

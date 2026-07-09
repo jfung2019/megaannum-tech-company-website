@@ -25,7 +25,7 @@ export function HeroEntity({ splineFailed, onSplineError }: HeroEntityProps) {
   const reducedMotion = useHeroMotionStore((s) => s.reducedMotion);
 
   const showSpline = HAS_SPLINE_URL && !isMobile && !reducedMotion && !splineFailed;
-  const showPlanes = !isMobile && !reducedMotion && !showSpline;
+  const showPlanes = !reducedMotion && !showSpline;
 
   return (
     <div className="relative flex h-full w-full items-center justify-center [transform-style:preserve-3d]">

@@ -18,6 +18,7 @@ const SECTIONS = [
 
 export function ScrollSpyNav() {
   const [activeSection, setActiveSection] = useState<(typeof SECTIONS)[number]["id"]>("intro");
+  const isDarkSection = activeSection === "intro" || activeSection === "intelligence" || activeSection === "contact";
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -54,10 +55,18 @@ export function ScrollSpyNav() {
       aria-label="Section navigation"
     >
       <div
-        className="relative flex flex-col items-end gap-2.5 rounded-[1.65rem] border border-white/28 bg-black/68 px-3 py-3.5 shadow-xl shadow-black/45 backdrop-blur-2xl"
+        className={cn(
+          "relative flex flex-col items-end gap-2.5 rounded-[1.65rem] border px-3 py-3.5 shadow-xl backdrop-blur-2xl transition-colors duration-500",
+          isDarkSection
+            ? "border-white/28 bg-black/68 shadow-black/45"
+            : "border-graphite/10 bg-white/72 shadow-graphite/20",
+        )}
       >
         <div
-          className="absolute bottom-5 right-[14px] top-5 w-px bg-white/24"
+          className={cn(
+            "absolute bottom-5 right-[14px] top-5 w-px transition-colors duration-500",
+            isDarkSection ? "bg-white/24" : "bg-graphite/14",
+          )}
           aria-hidden
         />
 
@@ -69,7 +78,11 @@ export function ScrollSpyNav() {
               <span
                 className={cn(
                   "text-[7px] font-semibold uppercase tracking-[0.16em] transition-colors",
-                  isActive ? "text-[#ff7a1a]" : "text-[#dff7ff] hover:text-white",
+                  isActive
+                    ? "text-[#ff7a1a]"
+                    : isDarkSection
+                      ? "text-[#dff7ff]/70 hover:text-white"
+                      : "text-graphite/48 hover:text-graphite",
                 )}
               >
                 {section.label}
@@ -79,7 +92,9 @@ export function ScrollSpyNav() {
                   "relative z-10 block h-1.5 w-1.5 rounded-full border",
                   isActive
                     ? "border-[#ff7a1a] bg-[#ff7a1a] shadow-[0_0_16px_rgba(255,122,26,0.8)]"
-                    : "border-[#dff7ff] bg-[#dff7ff]",
+                    : isDarkSection
+                      ? "border-[#dff7ff]/70 bg-[#dff7ff]/70"
+                      : "border-graphite/24 bg-graphite/28",
                 )}
                 aria-hidden
               />

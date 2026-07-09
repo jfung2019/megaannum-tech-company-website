@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useHeroMotionStore } from "@/store/useHeroMotionStore";
 
 export function AmbientGlow() {
+  const isHeroInView = useHeroMotionStore((s) => s.isHeroInView);
   const reducedMotion = useHeroMotionStore((s) => s.reducedMotion);
 
   return (
@@ -18,8 +19,12 @@ export function AmbientGlow() {
           background:
             "radial-gradient(ellipse 55% 42% at 50% 58%, rgba(242,169,0,0.2) 0%, transparent 68%)",
         }}
-        animate={reducedMotion ? undefined : { opacity: [0.85, 1, 0.85] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        animate={reducedMotion || !isHeroInView ? { opacity: 0.85 } : { opacity: [0.85, 1, 0.85] }}
+        transition={
+          reducedMotion || !isHeroInView
+            ? { duration: 0.35, ease: "easeOut" }
+            : { duration: 10, repeat: Infinity, ease: "easeInOut" }
+        }
       />
 
       {/* Volumetric orange bloom */}
