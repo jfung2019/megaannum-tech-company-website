@@ -18,15 +18,25 @@ const NAV_LINKS = [
 ] as const;
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOnHero, setIsOnHero] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const updateScrolled = () => setIsScrolled(window.scrollY > 80);
+    const intro = document.getElementById("intro");
+    if (!intro) return;
 
-    updateScrolled();
-    window.addEventListener("scroll", updateScrolled, { passive: true });
-    return () => window.removeEventListener("scroll", updateScrolled);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsOnHero(entry.isIntersecting);
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "-80px 0px 0px 0px",
+      },
+    );
+
+    observer.observe(intro);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -38,10 +48,10 @@ export function Navbar() {
     >
       <nav
         className={cn(
-          "relative mx-auto grid max-w-[1600px] grid-cols-[1fr_auto] items-center rounded-full border px-4 py-3 transition-all duration-500 md:px-6 min-[920px]:grid-cols-[1fr_auto_1fr]",
-          isScrolled
-            ? "border-white/70 bg-white/78 shadow-xl shadow-graphite/5 backdrop-blur-xl"
-            : "border-white/24 bg-black/42 shadow-xl shadow-black/35 backdrop-blur-2xl",
+          "relative mx-auto grid max-w-[1600px] grid-cols-[1fr_auto] items-center rounded-full border px-4 py-3 shadow-xl backdrop-blur-2xl transition-all duration-500 md:px-6 min-[920px]:grid-cols-[1fr_auto_1fr]",
+          isOnHero
+            ? "border-white/24 bg-[#0a0c0e]/82 shadow-black/40"
+            : "border-white/70 bg-white/85 shadow-graphite/5",
           isMobileMenuOpen && "max-[919px]:pointer-events-none max-[919px]:opacity-0",
         )}
         aria-label="Main navigation"
@@ -52,8 +62,8 @@ export function Navbar() {
           <div>
             <span
               className={cn(
-                "block text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors",
-                isScrolled || isMobileMenuOpen ? "text-graphite" : "text-[#f4fbff]",
+                "block text-[11px] font-bold uppercase tracking-[0.18em] transition-colors duration-300",
+                isOnHero ? "text-white" : "text-graphite",
               )}
             >
               MEGAANNUM
@@ -68,8 +78,10 @@ export function Navbar() {
               <Link
                 href={link.href}
                 className={cn(
-                  "text-[8px] uppercase tracking-[0.13em] transition-colors duration-300 xl:text-[9px] xl:tracking-nav",
-                  isScrolled ? "text-graphite/52 hover:text-graphite" : "text-[#dff7ff] hover:text-[#ff7a1a]",
+                  "text-[8px] font-semibold uppercase tracking-[0.13em] transition-colors duration-300 xl:text-[9px] xl:tracking-nav",
+                  isOnHero
+                    ? "text-[#f4fbff] hover:text-accent"
+                    : "text-graphite/60 hover:text-graphite",
                 )}
               >
                 {link.label}
@@ -88,7 +100,7 @@ export function Navbar() {
               link: link.href,
             }))}
             colors={["#EC721A", "#8fd8ff", "#05080c"]}
-            menuButtonColor={isScrolled || isMobileMenuOpen ? "#1E2328" : "#ffffff"}
+            menuButtonColor={isOnHero ? "#ffffff" : "#1E2328"}
             openMenuButtonColor="#1E2328"
             accentColor="#EC721A"
             onMenuOpen={() => setIsMobileMenuOpen(true)}

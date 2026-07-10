@@ -1135,7 +1135,7 @@ export function ThreePlanesHero() {
   return (
     <div className="h-full w-full">
       <Canvas
-        camera={{ position: [0, 0, 4.7], fov: 42 }}
+        camera={{ position: [0, 0, 5.35], fov: 46 }}
         dpr={[1, 1.75]}
         frameloop={isHeroInView ? "always" : "never"}
         gl={{ alpha: true, antialias: true }}

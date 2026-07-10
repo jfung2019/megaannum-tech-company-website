@@ -55,8 +55,8 @@ export function HeroScene() {
             <HeroMobileFallback />
           </div>
         ) : (
-          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <div className="relative h-[74vh] w-screen max-w-none [transform:translateZ(20px)]">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="relative h-full w-screen max-w-none [transform:translateZ(20px)]">
               <HeroEntity
                 splineFailed={splineFailed}
                 onSplineError={() => setSplineFailed(true)}

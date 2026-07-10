@@ -207,6 +207,10 @@ export function StaggeredMenu({
         const numberEls = Array.from(panel.querySelectorAll<HTMLElement>("[data-menu-numbered-item]"));
         if (itemEls.length) gsap.set(itemEls, { yPercent: 140, rotate: 10 });
         if (numberEls.length) gsap.set(numberEls, { "--sm-num-opacity": 0 });
+        setTextLines(["Menu", "Close"]);
+        if (textInnerRef.current) {
+          gsap.set(textInnerRef.current, { yPercent: 0 });
+        }
         busyRef.current = false;
         setIsClosing(false);
         afterClose?.();
@@ -271,6 +275,12 @@ export function StaggeredMenu({
       yPercent: -((sequence.length - 1) / sequence.length) * 100,
       duration: 0.78,
       ease: "power4.out",
+      onComplete: () => {
+        if (!opening) {
+          setTextLines(["Menu", "Close"]);
+          gsap.set(inner, { yPercent: 0 });
+        }
+      },
     });
   }, []);
 
@@ -351,7 +361,7 @@ export function StaggeredMenu({
         id="mobile-staggered-menu-panel"
         ref={panelRef}
         className={cn(
-          "fixed bottom-0 top-0 z-[106] hidden w-full overflow-y-auto bg-[#f7f7f5] px-7 pb-8 pt-28 opacity-0 shadow-2xl shadow-black/30 max-[919px]:block sm:w-[min(420px,86vw)]",
+          "fixed bottom-0 top-0 z-[106] hidden w-full overflow-y-auto bg-[#f7f7f5] px-7 pb-8 pt-28 opacity-0 shadow-2xl shadow-black/30 max-[919px]:block sm:w-[min(420px,86vw)] @container",
           position === "left" ? "left-0" : "right-0",
         )}
         aria-hidden={!menuChromeVisible}
@@ -368,7 +378,7 @@ export function StaggeredMenu({
                   href={item.link}
                   aria-label={item.ariaLabel}
                   data-menu-numbered-item={displayItemNumbering || undefined}
-                  className="group relative inline-block pr-14 text-[clamp(2.6rem,13vw,4.4rem)] font-black uppercase leading-none tracking-[-0.07em] text-graphite transition-colors duration-300 hover:text-[var(--sm-accent)]"
+                  className="group relative inline-block max-w-full pr-12 text-[clamp(1.85rem,10cqw,4.4rem)] font-black uppercase leading-none tracking-[-0.07em] text-graphite transition-colors duration-300 hover:text-[var(--sm-accent)] sm:pr-14 sm:text-[clamp(1.85rem,10cqw,2.85rem)] sm:tracking-[-0.05em]"
                   style={{ "--sm-num-opacity": 0, "--sm-accent": accentColor } as React.CSSProperties}
                   onClick={closeMenu}
                 >

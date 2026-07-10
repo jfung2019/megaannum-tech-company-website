@@ -29,7 +29,7 @@ export function HeroEntity({ splineFailed, onSplineError }: HeroEntityProps) {
 
   return (
     <div className="relative flex h-full w-full items-center justify-center [transform-style:preserve-3d]">
-      <div className="relative z-10 h-[min(66vh,700px)] w-screen max-w-none [transform:translateZ(40px)]">
+      <div className="relative z-10 h-full w-screen max-w-none [transform:translateZ(40px)]">
         {showSpline ? (
           <SplineHero onLoadError={onSplineError} />
         ) : null}
