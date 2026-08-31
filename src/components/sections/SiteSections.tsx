@@ -331,7 +331,7 @@ function OurBusinessSection() {
                   <p className="text-[10px] uppercase tracking-[0.28em] text-sky-200/70">Proprietary System</p>
                 </div>
                 <h3 className="mt-3 text-sm font-semibold text-sky-100">{platform.name}</h3>
-                <p className="mt-3 text-sm leading-6 text-white/58">{platform.description}</p>
+                <p className="mt-3 text-sm leading-6 text-sky-100">{platform.description}</p>
               </div>
             ))}
           </div>
