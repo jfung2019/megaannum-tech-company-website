@@ -1,6 +1,6 @@
 "use client";
 
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useLayoutEffect, useMemo, useRef } from "react";
 import {
@@ -299,18 +299,62 @@ function makePanelTexture(panel: PanelSpec, index: number) {
 
 const MEMORY_PLANE_COUNT = 120;
 const MEMORY_TEXTURE_COUNT = 6;
-const MEMORY_PLACEHOLDER_IMAGES = [
-  "https://picsum.photos/seed/megaannum-memory-1/640/400",
-  "https://picsum.photos/seed/megaannum-memory-2/640/400",
-  "https://picsum.photos/seed/megaannum-memory-3/640/400",
-  "https://i.imgur.com/8Km9tLL.jpg",
-  "https://i.imgur.com/BbKBET2.jpg",
-  "https://i.imgur.com/CzXTtJV.jpg",
-];
+
+const MEMORY_TEXTURE_TINTS = ["#8fd8ff", "#b8ecff", "#5bb6ff", "#d8f4ff", "#9ecfff", "#c4e8ff"];
 
 function hashRandom(seed: number) {
   const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
   return value - Math.floor(value);
+}
+
+function makeMemoryTexture(seed: number) {
+  if (typeof document === "undefined") return null;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 640;
+  canvas.height = 400;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  const tint = MEMORY_TEXTURE_TINTS[seed % MEMORY_TEXTURE_TINTS.length];
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, "#120d08");
+  gradient.addColorStop(0.45, "#070707");
+  gradient.addColorStop(1, "#1a1208");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < 6; i += 1) {
+    const x = (hashRandom(seed * 11 + i * 3.7) * 0.7 + 0.15) * canvas.width;
+    const y = (hashRandom(seed * 17 + i * 5.1) * 0.6 + 0.2) * canvas.height;
+    const radius = 40 + hashRandom(seed * 23 + i * 2.9) * 120;
+    const blob = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    blob.addColorStop(0, `${tint}88`);
+    blob.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = blob;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  ctx.fillStyle = "rgba(255,255,255,0.06)";
+  for (let x = 0; x < canvas.width; x += 28) {
+    ctx.fillRect(x, 0, 1, canvas.height);
+  }
+
+  ctx.fillStyle = "rgba(255,255,255,0.85)";
+  ctx.font = "700 28px Arial";
+  ctx.fillText(`MEMORY ${seed + 1}`, 28, 48);
+
+  ctx.fillStyle = "rgba(255,255,255,0.42)";
+  ctx.font = "600 14px Arial";
+  ctx.fillText("PROJECT SNAPSHOT", 28, 74);
+
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  texture.minFilter = LinearFilter;
+  texture.magFilter = LinearFilter;
+
+  return texture;
 }
 
 type MemoryPlaneInstance = {
@@ -396,16 +440,18 @@ function MemoryPlaneBatch({
 
 function MemoryPlanesContent() {
   const groupRef = useRef<Group>(null);
-  const textures = useTexture(MEMORY_PLACEHOLDER_IMAGES);
+  const textures = useMemo(
+    () =>
+      Array.from({ length: MEMORY_TEXTURE_COUNT }, (_, index) => {
+        const texture = makeMemoryTexture(index);
+        if (!texture) {
+          throw new Error(`Failed to create memory texture ${index}`);
+        }
+        return texture;
+      }),
+    [],
+  );
   const instances = useMemo(() => createMemoryPlaneInstances(MEMORY_PLANE_COUNT), []);
-
-  useMemo(() => {
-    textures.forEach((texture) => {
-      texture.colorSpace = SRGBColorSpace;
-      texture.minFilter = LinearFilter;
-      texture.magFilter = LinearFilter;
-    });
-  }, [textures]);
 
   const groupedInstances = useMemo(() => {
     const groups = Array.from({ length: MEMORY_TEXTURE_COUNT }, () => [] as MemoryPlaneInstance[]);
