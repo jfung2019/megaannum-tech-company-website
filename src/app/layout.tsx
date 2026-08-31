@@ -10,7 +10,7 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Megaannum | Intelligence Integrated",
+  title: "Megaannum | Generative AI Solutions",
   description: "One AI. Infinite Applications. Premium institutional intelligence for finance, treasury, and enterprise.",
 };
 

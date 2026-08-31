@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AmbientGlow } from "@/components/hero/AmbientGlow";
 import { CursorTracker } from "@/components/hero/CursorTracker";
 import { DeviceDetector } from "@/components/hero/DeviceDetector";
@@ -14,12 +14,34 @@ import { ScrollSpyNav } from "@/components/hero/ScrollSpyNav";
 import { useHeroMotionStore } from "@/store/useHeroMotionStore";
 
 export function HeroScene() {
-  const isMobile = useHeroMotionStore((s) => s.isMobile);
   const reducedMotion = useHeroMotionStore((s) => s.reducedMotion);
+  const setHeroInView = useHeroMotionStore((s) => s.setHeroInView);
   const [splineFailed, setSplineFailed] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setHeroInView(entry.isIntersecting);
+      },
+      {
+        rootMargin: "120px 0px 120px 0px",
+        threshold: 0.01,
+      },
+    );
+
+    observer.observe(section);
+    return () => {
+      observer.disconnect();
+      setHeroInView(true);
+    };
+  }, [setHeroInView]);
 
   return (
-    <section className="relative h-[100dvh] w-full overflow-hidden bg-[#060606]">
+    <section ref={sectionRef} id="intro" className="relative h-[100dvh] w-full overflow-hidden bg-[#060606]">
       <DeviceDetector />
       <CursorTracker />
       <AmbientGlow />
@@ -28,13 +50,13 @@ export function HeroScene() {
       <ScrollSpyNav />
 
       <HeroStage>
-        {isMobile || reducedMotion ? (
+        {reducedMotion ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <HeroMobileFallback />
           </div>
         ) : (
-          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <div className="relative h-[74vh] w-screen max-w-none [transform:translateZ(20px)]">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="relative h-full w-screen max-w-none [transform:translateZ(20px)]">
               <HeroEntity
                 splineFailed={splineFailed}
                 onSplineError={() => setSplineFailed(true)}

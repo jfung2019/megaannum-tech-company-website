@@ -5,9 +5,12 @@ import { normalizePointer } from "@/lib/mouse";
 import { useHeroMotionStore } from "@/store/useHeroMotionStore";
 
 export function CursorTracker() {
+  const isHeroInView = useHeroMotionStore((s) => s.isHeroInView);
   const setPointer = useHeroMotionStore((s) => s.setPointer);
 
   useEffect(() => {
+    if (!isHeroInView) return;
+
     const onMove = (event: PointerEvent) => {
       const { normalizedX, normalizedY } = normalizePointer(
         event.clientX,
@@ -22,7 +25,7 @@ export function CursorTracker() {
 
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
-  }, [setPointer]);
+  }, [isHeroInView, setPointer]);
 
   return null;
 }

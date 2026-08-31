@@ -873,7 +873,7 @@ function OperatorModel() {
   const { scene } = useGLTF("/models/3d_figure.glb");
 
   return (
-    <group position={[0, -0.72, 1.16]} rotation={[0, Math.PI, 0]} scale={[1.08, 1.08, 1.08]}>
+    <group position={[0, -0.86, 1.34]} rotation={[0, Math.PI, 0]} scale={[1.04, 1.04, 1.04]}>
       <primitive object={scene} />
     </group>
   );
@@ -1101,14 +1101,14 @@ function PlaneStack() {
 
       <MemoryPlanes />
 
+      {PANELS.slice(0, 6).map((panel, index) => (
+        <LaneRibbonPanel key={`ribbon-${panel.title}-${index}`} panel={panel} index={index} />
+      ))}
+
       <AiParticleOrb />
       <Suspense fallback={null}>
         <OperatorModel />
       </Suspense>
-
-      {PANELS.slice(0, 6).map((panel, index) => (
-        <LaneRibbonPanel key={`ribbon-${panel.title}-${index}`} panel={panel} index={index} />
-      ))}
 
       {particles.map((particle, index) => (
         <mesh
@@ -1130,11 +1130,14 @@ function PlaneStack() {
 }
 
 export function ThreePlanesHero() {
+  const isHeroInView = useHeroMotionStore((s) => s.isHeroInView);
+
   return (
     <div className="h-full w-full">
       <Canvas
-        camera={{ position: [0, 0, 4.7], fov: 42 }}
+        camera={{ position: [0, 0, 5.35], fov: 46 }}
         dpr={[1, 1.75]}
+        frameloop={isHeroInView ? "always" : "never"}
         gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={1.15} />
