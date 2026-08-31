@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AmbientGlow } from "@/components/hero/AmbientGlow";
 import { CursorTracker } from "@/components/hero/CursorTracker";
 import { DeviceDetector } from "@/components/hero/DeviceDetector";
+import { HeroDataPanels } from "@/components/hero/HeroDataPanels";
 import { HeroEntity } from "@/components/hero/HeroEntity";
 import { HeroFooter } from "@/components/hero/HeroFooter";
 import { HeroMobileFallback } from "@/components/hero/HeroMobileFallback";
@@ -67,6 +68,8 @@ export function HeroScene() {
 
         <HeroTypography />
       </HeroStage>
+
+      {reducedMotion ? null : <HeroDataPanels />}
 
       <HeroFooter />
     </section>
