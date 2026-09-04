@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { AmbientGlow } from "@/components/hero/AmbientGlow";
 import { CursorTracker } from "@/components/hero/CursorTracker";
 import { DeviceDetector } from "@/components/hero/DeviceDetector";
 import { HeroEntity } from "@/components/hero/HeroEntity";
 import { HeroFooter } from "@/components/hero/HeroFooter";
-import { HeroMobileFallback } from "@/components/hero/HeroMobileFallback";
 import { HeroStage } from "@/components/hero/HeroStage";
 import { HeroTypography } from "@/components/hero/HeroTypography";
 import { Navbar } from "@/components/hero/Navbar";
@@ -16,7 +15,6 @@ import { useHeroMotionStore } from "@/store/useHeroMotionStore";
 export function HeroScene() {
   const reducedMotion = useHeroMotionStore((s) => s.reducedMotion);
   const setHeroInView = useHeroMotionStore((s) => s.setHeroInView);
-  const [splineFailed, setSplineFailed] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -50,17 +48,10 @@ export function HeroScene() {
       <ScrollSpyNav />
 
       <HeroStage>
-        {reducedMotion ? (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <HeroMobileFallback />
-          </div>
-        ) : (
+        {reducedMotion ? null : (
           <div className="pointer-events-none absolute inset-0">
             <div className="relative h-full w-screen max-w-none [transform:translateZ(20px)]">
-              <HeroEntity
-                splineFailed={splineFailed}
-                onSplineError={() => setSplineFailed(true)}
-              />
+              <HeroEntity />
             </div>
           </div>
         )}

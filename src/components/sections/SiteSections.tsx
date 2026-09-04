@@ -476,6 +476,15 @@ function FamilyOfficeDetailSection() {
   );
 }
 
+function EmailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
+      <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M4 6.5L12 13L20 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function FinalCtaSection() {
   return (
     <section id="contact" className="content-section scroll-mt-24 bg-[#05080c] px-6 py-24 text-white md:px-10">
@@ -490,6 +499,16 @@ function FinalCtaSection() {
           Megaannum combines proprietary AI, financial expertise, and scalable engineering to deliver the next
           generation of treasury, trading, and family office intelligence.
         </p>
+
+        <div className="motion-card mt-10 flex items-center justify-center">
+          <a
+            href="mailto:hello@megaannum.com"
+            aria-label="Email us"
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-white/18 text-white/70 transition-all duration-300 hover:border-accent/60 hover:text-accent hover:shadow-[0_0_24px_rgba(236,113,26,0.35)]"
+          >
+            <EmailIcon />
+          </a>
+        </div>
       </div>
     </section>
   );

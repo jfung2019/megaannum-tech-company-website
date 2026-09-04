@@ -9,12 +9,13 @@ import { cinematicEase } from "@/lib/animation";
 import { cn } from "@/lib/cn";
 
 const NAV_LINKS = [
-  { label: "Business", href: "#business" },
-  { label: "Expertise", href: "#expertise" },
-  { label: "Intelligence", href: "#intelligence" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Family", href: "#family-office" },
-  { label: "Contact", href: "#contact" },
+  { label: "Business", href: "/#business" },
+  { label: "Expertise", href: "/#expertise" },
+  { label: "Intelligence", href: "/#intelligence" },
+  { label: "Solutions", href: "/#solutions" },
+  { label: "Family", href: "/#family-office" },
+  { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/#contact" },
 ] as const;
 
 export function Navbar() {
